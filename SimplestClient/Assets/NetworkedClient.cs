@@ -6,6 +6,10 @@ using UnityEngine.Networking;
 
 public class NetworkedClient : MonoBehaviour
 {
+    public string login;
+    public string password;
+
+    public static NetworkedClient Instance;
 
     int connectionID;
     int maxConnections = 1000;
@@ -20,6 +24,8 @@ public class NetworkedClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
+
         Connect();
     }
 
@@ -27,7 +33,7 @@ public class NetworkedClient : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.S))
-            SendMessageToHost("Hello from client");
+            SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password);
 
         UpdateNetworkConnection();
     }
@@ -124,5 +130,12 @@ public class NetworkedClient : MonoBehaviour
         return isConnected;
     }
 
+
+}
+
+public static class ClientToServerTransferSignifiers
+{
+    public const int CreateAccount = 1;
+    public const int Login = 2;
 
 }
