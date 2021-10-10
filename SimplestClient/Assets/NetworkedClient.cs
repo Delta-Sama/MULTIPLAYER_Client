@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -123,6 +124,19 @@ public class NetworkedClient : MonoBehaviour
     private void ProcessRecievedMsg(string msg, int id)
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
+
+        string[] csv = msg.Split(',');
+
+        int requestType = int.Parse(csv[0]);
+
+        if (requestType == ServerToClientTransferSignifiers.Message)
+        {
+            string textMessage = csv[1];
+            float duration = (csv.Length > 2 ? float.Parse(csv[2], CultureInfo.InvariantCulture) : 3.0f);
+            int color = (csv.Length > 3 ? int.Parse(csv[3]) : 0);
+
+            LoginManager.Instance.DisplayMessage(textMessage, duration, color);
+        }
     }
 
     public bool IsConnected()
@@ -137,5 +151,11 @@ public static class ClientToServerTransferSignifiers
 {
     public const int CreateAccount = 1;
     public const int Login = 2;
+
+}
+
+public static class ServerToClientTransferSignifiers
+{
+    public const int Message = 1;
 
 }

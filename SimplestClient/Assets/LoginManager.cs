@@ -5,14 +5,21 @@ using UnityEngine.UI;
 
 public class LoginManager : MonoBehaviour
 {
+    public static LoginManager Instance;
+
     [SerializeField] GameObject createTab, loginTab;
+    [SerializeField] GameObject message;
 
     GameObject submitButton, userNameInput, passwordInput, toggles, loginToggle, createToggle;
     GameObject forgotPasswordButton, createLoginInput, createPasswordInput, createEmailInput;
 
+    private float displayingMessageTime;
+
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
+
         createTab.SetActive(true);
 
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
@@ -48,11 +55,10 @@ public class LoginManager : MonoBehaviour
 
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (message.activeSelf && displayingMessageTime < Time.time)
+            message.SetActive(false);
     }
 
     void SubmitRequst()
@@ -76,6 +82,16 @@ public class LoginManager : MonoBehaviour
             if (login != "" && password != "" && email != "")
                 NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password + "," + email);
         }
+    }
+
+    private Color[] colors = { Color.red, Color.yellow, Color.green, Color.blue };
+    public void DisplayMessage(string textMessage, float duration, int color = 0)
+    {
+        message.SetActive(true);
+        message.GetComponent<Text>().text = textMessage;
+        message.GetComponent<Text>().color = colors[color];
+
+        displayingMessageTime = Time.time + duration;
     }
 
     void AdjustUI(bool _)
