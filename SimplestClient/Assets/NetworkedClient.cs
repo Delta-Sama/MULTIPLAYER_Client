@@ -151,7 +151,7 @@ public static class ClientToServerTransferSignifiers
 {
     public const int CreateAccount = 1;
     public const int Login = 2;
-
+    public const int ForgotPassword = 3;
 }
 
 public static class ServerToClientTransferSignifiers

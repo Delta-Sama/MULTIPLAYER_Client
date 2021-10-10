@@ -28,6 +28,8 @@ public class LoginManager : MonoBehaviour
         {
             if (obj.name == "SubmitButton")
                 submitButton = obj;
+            else if (obj.name == "ForgotPasswordButton")
+                forgotPasswordButton = obj;
             else if (obj.name == "LoginInputField")
                 userNameInput = obj;
             else if (obj.name == "PasswordInputField")
@@ -49,6 +51,7 @@ public class LoginManager : MonoBehaviour
         createTab.SetActive(false);
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitRequst);
+        forgotPasswordButton.GetComponent<Button>().onClick.AddListener(ForgotPasswordRequest);
 
         loginToggle.GetComponent<Toggle>().onValueChanged.AddListener(AdjustUI);
         createToggle.GetComponent<Toggle>().onValueChanged.AddListener(AdjustUI);
@@ -59,6 +62,15 @@ public class LoginManager : MonoBehaviour
     {
         if (message.activeSelf && displayingMessageTime < Time.time)
             message.SetActive(false);
+    }
+
+    void ForgotPasswordRequest()
+    {
+        string login = userNameInput.GetComponent<InputField>().text;
+        string password = passwordInput.GetComponent<InputField>().text;
+
+        if (login != "")
+            NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.ForgotPassword + "," + login);
     }
 
     void SubmitRequst()
