@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LoginManager : MonoBehaviour
 {
-    GameObject submitButton, userNameInput, passwordInput, loginToggle, createToggle;
+    GameObject submitButton, userNameInput, passwordInput, emailInput, loginToggle, createToggle;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +20,8 @@ public class LoginManager : MonoBehaviour
                 userNameInput = obj;
             else if (obj.name == "PasswordInputField")
                 passwordInput = obj;
+            else if (obj.name == "EmailInputField")
+                emailInput = obj;
             else if (obj.name == "LoginToggle")
                 loginToggle = obj;
             else if (obj.name == "CreateAccountToggle")
@@ -42,14 +44,17 @@ public class LoginManager : MonoBehaviour
         Debug.Log("Submit");
         string login = userNameInput.GetComponent<InputField>().text;
         string password = passwordInput.GetComponent<InputField>().text;
+        string email = emailInput.GetComponent<InputField>().text;
 
         if (loginToggle.GetComponent<Toggle>().isOn)
         {
-            NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.Login + "," + login + "," + password);
+            if (login != "" && password != "")
+                NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.Login + "," + login + "," + password);
         }
         else if (createToggle.GetComponent<Toggle>().isOn)
         {
-            NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password);
+            if (login != "" && password != "" && email != "")
+                NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password + "," + email);
         }
     }
 
