@@ -33,9 +33,6 @@ public class NetworkedClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
-            SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password);
-
         UpdateNetworkConnection();
     }
 
@@ -142,6 +139,19 @@ public class NetworkedClient : MonoBehaviour
             UIManager.Instance.SetLoginActive(false);
             UIManager.Instance.SetChatActive(true);
         }
+        else if (requestType == ServerToClientTransferSignifiers.AddUserToLocalClient)
+        {
+            int userId = int.Parse(csv[1]);
+            string name = csv[2];
+
+            LocalGameManager.Instance.AddUser(userId,name);
+        }
+        else if (requestType == ServerToClientTransferSignifiers.UserDisconnected)
+        {
+            int userId = int.Parse(csv[1]);
+
+            LocalGameManager.Instance.RemoveUser(userId);
+        }
     }
 
     public bool IsConnected()
@@ -164,4 +174,6 @@ public static class ServerToClientTransferSignifiers
     public const int Message = 1;
     public const int SuccessfulLogin = 2;
 
+    public const int AddUserToLocalClient = 3;
+    public const int UserDisconnected = 4;
 }
