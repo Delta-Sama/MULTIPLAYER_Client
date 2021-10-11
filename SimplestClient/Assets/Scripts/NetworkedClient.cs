@@ -135,7 +135,12 @@ public class NetworkedClient : MonoBehaviour
             float duration = (csv.Length > 2 ? float.Parse(csv[2], CultureInfo.InvariantCulture) : 3.0f);
             int color = (csv.Length > 3 ? int.Parse(csv[3]) : 0);
 
-            LoginManager.Instance.DisplayMessage(textMessage, duration, color);
+            FeedbackManager.Instance.DisplayMessage(textMessage, duration, color);
+        }
+        else if (requestType == ServerToClientTransferSignifiers.SuccessfulLogin)
+        {
+            UIManager.Instance.SetLoginActive(false);
+            UIManager.Instance.SetChatActive(true);
         }
     }
 
@@ -157,5 +162,6 @@ public static class ClientToServerTransferSignifiers
 public static class ServerToClientTransferSignifiers
 {
     public const int Message = 1;
+    public const int SuccessfulLogin = 2;
 
 }

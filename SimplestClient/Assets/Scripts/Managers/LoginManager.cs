@@ -8,12 +8,9 @@ public class LoginManager : MonoBehaviour
     public static LoginManager Instance;
 
     [SerializeField] GameObject createTab, loginTab;
-    [SerializeField] GameObject message;
 
     GameObject submitButton, userNameInput, passwordInput, toggles, loginToggle, createToggle;
     GameObject forgotPasswordButton, createLoginInput, createPasswordInput, createEmailInput;
-
-    private float displayingMessageTime;
 
     // Start is called before the first frame update
     void Start()
@@ -58,12 +55,6 @@ public class LoginManager : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        if (message.activeSelf && displayingMessageTime < Time.time)
-            message.SetActive(false);
-    }
-
     void ForgotPasswordRequest()
     {
         string login = userNameInput.GetComponent<InputField>().text;
@@ -75,8 +66,6 @@ public class LoginManager : MonoBehaviour
 
     void SubmitRequst()
     {
-        Debug.Log("Submit");
-
         if (loginToggle.GetComponent<Toggle>().isOn)
         {
             string login = userNameInput.GetComponent<InputField>().text;
@@ -96,20 +85,9 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-    private Color[] colors = { Color.red, Color.yellow, Color.green, Color.blue };
-    public void DisplayMessage(string textMessage, float duration, int color = 0)
-    {
-        message.SetActive(true);
-        message.GetComponent<Text>().text = textMessage;
-        message.GetComponent<Text>().color = colors[color];
-
-        displayingMessageTime = Time.time + duration;
-    }
-
     void AdjustUI(bool _)
     {
         createTab.SetActive(createToggle.GetComponent<Toggle>().isOn);
         loginTab.SetActive(loginToggle.GetComponent<Toggle>().isOn);
-
     }
 }
