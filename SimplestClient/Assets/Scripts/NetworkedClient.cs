@@ -110,7 +110,7 @@ public class NetworkedClient : MonoBehaviour
         NetworkTransport.Disconnect(hostID, connectionID, out error);
     }
     
-    public void SendMessageToHost(string msg)
+    public void SendServerRequest(string msg)
     {
         // Convert a string to a byte buffer
         byte[] buffer = Encoding.Unicode.GetBytes(msg);
@@ -120,7 +120,7 @@ public class NetworkedClient : MonoBehaviour
 
     private void ProcessRecievedMsg(string msg, int id)
     {
-        Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
+        Debug.Log("[SERVER]: " + msg);
 
         string[] csv = msg.Split(',');
 
@@ -152,6 +152,20 @@ public class NetworkedClient : MonoBehaviour
 
             LocalGameManager.Instance.RemoveUser(userId);
         }
+        else if (requestType == ServerToClientTransferSignifiers.ReceiveGlobalMessage)
+        {
+            int userId = int.Parse(csv[1]);
+            string message = csv[2];
+
+            ChatManager.Instance.ReceiveGlobalMessage(userId,message);
+        }
+        else if (requestType == ServerToClientTransferSignifiers.ReceivePrivateMessage)
+        {
+            int userId = int.Parse(csv[1]);
+            string message = csv[2];
+
+            ChatManager.Instance.ReceivePrivateMessage(userId, message);
+        }
     }
 
     public bool IsConnected()
@@ -167,6 +181,9 @@ public static class ClientToServerTransferSignifiers
     public const int CreateAccount = 1;
     public const int Login = 2;
     public const int ForgotPassword = 3;
+
+    public const int SendGlobalMessage = 4;
+    public const int SendPrivateMessage = 5;
 }
 
 public static class ServerToClientTransferSignifiers
@@ -176,4 +193,7 @@ public static class ServerToClientTransferSignifiers
 
     public const int AddUserToLocalClient = 3;
     public const int UserDisconnected = 4;
+
+    public const int ReceiveGlobalMessage = 5;
+    public const int ReceivePrivateMessage = 6;
 }

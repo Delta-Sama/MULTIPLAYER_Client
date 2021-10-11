@@ -61,7 +61,7 @@ public class LoginManager : MonoBehaviour
         string password = passwordInput.GetComponent<InputField>().text;
 
         if (login != "")
-            NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.ForgotPassword + "," + login);
+            NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.ForgotPassword + "," + login);
     }
 
     void SubmitRequst()
@@ -72,7 +72,7 @@ public class LoginManager : MonoBehaviour
             string password = passwordInput.GetComponent<InputField>().text;
 
             if (login != "" && password != "")
-                NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.Login + "," + login + "," + password);
+                NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.Login + "," + login + "," + password);
         }
         else if (createToggle.GetComponent<Toggle>().isOn)
         {
@@ -81,7 +81,7 @@ public class LoginManager : MonoBehaviour
             string email = createEmailInput.GetComponent<InputField>().text;
 
             if (login != "" && password != "" && email != "")
-                NetworkedClient.Instance.SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password + "," + email);
+                NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.CreateAccount + "," + login + "," + password + "," + email);
         }
     }
 
