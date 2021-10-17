@@ -14,7 +14,8 @@ public class ChatManager : MonoBehaviour
     [SerializeField] private GameObject UsersContent;
 
     [Header("Prefabs")]
-    [SerializeField] private GameObject OwnMessagePrefab;
+    [SerializeField] private GameObject OwnGlobalMessagePrefab;
+    [SerializeField] private GameObject OwnPrivateMessagePrefab;
     [SerializeField] private GameObject GlobalMessagePrefab;
     [SerializeField] private GameObject PrivateMessagePrefab;
     [SerializeField] private GameObject UserButtonPrefab;
@@ -50,12 +51,15 @@ public class ChatManager : MonoBehaviour
         if (isPrivateMessage)
         {
             NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.SendPrivateMessage + "," + privateRecieverId + "," + message);
+
+            UserAccount user = UsersManager.Instance.GetUser(privateRecieverId);
+            AddMessage(message, "To: " + user.name, MessageType.OwnPrivateMessage);
         }
         else
         {
             NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.SendGlobalMessage + "," + message);
 
-            AddMessage(message, "Self", MessageType.OwnMessage);
+            AddMessage(message, "Self", MessageType.OwnGlobalMessage);
         }
 
         // Clear input
@@ -72,8 +76,10 @@ public class ChatManager : MonoBehaviour
         }
 
         GameObject Prefab = GlobalMessagePrefab;
-        if (type == MessageType.OwnMessage)
-            Prefab = OwnMessagePrefab;
+        if (type == MessageType.OwnGlobalMessage)
+            Prefab = OwnGlobalMessagePrefab;
+        else if (type == MessageType.OwnPrivateMessage)
+            Prefab = OwnPrivateMessagePrefab;
         else if (type == MessageType.PrivateMessage)
             Prefab = PrivateMessagePrefab;
 
@@ -108,6 +114,9 @@ public class ChatManager : MonoBehaviour
         {
             userButton.Value.GetComponent<UserButtonBehavior>().SetActiveState(userButton.Key == privateRecieverId);
         }
+
+        // Set visual state for send button
+        SendButton.GetComponent<UserButtonBehavior>().SetActiveState(isPrivateMessage);
     }
 
     public void RemoveUserButton(int userId)
@@ -154,7 +163,8 @@ public class ChatManager : MonoBehaviour
 
 public enum MessageType
 {
-    OwnMessage,
+    OwnGlobalMessage,
+    OwnPrivateMessage,
     GlobalMessage,
     PrivateMessage
 }

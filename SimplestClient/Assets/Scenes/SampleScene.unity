@@ -503,7 +503,7 @@ RectTransform:
   - {fileID: 2069248379}
   - {fileID: 677915561}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1624,7 +1624,7 @@ Transform:
   - {fileID: 1081904415}
   - {fileID: 1167719171}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &934154929
 GameObject:
@@ -2942,7 +2942,8 @@ MonoBehaviour:
   SendButton: {fileID: 2069248382}
   ChatContent: {fileID: 1180514920}
   UsersContent: {fileID: 256416290}
-  OwnMessagePrefab: {fileID: 614194647013496612, guid: b212dbfa718ab514d875c2799cdc330b, type: 3}
+  OwnGlobalMessagePrefab: {fileID: 614194647013496612, guid: b212dbfa718ab514d875c2799cdc330b, type: 3}
+  OwnPrivateMessagePrefab: {fileID: 2988688908889998615, guid: 55e205db935043a4e9985bc0e3721757, type: 3}
   GlobalMessagePrefab: {fileID: 5310968258580745941, guid: 88eb353ea64aed1498ca3ee0bf7f6555, type: 3}
   PrivateMessagePrefab: {fileID: 8888016093198935500, guid: bd59e3d174c771442bf618471ebad101, type: 3}
   UserButtonPrefab: {fileID: 3772529554189154820, guid: 858ee0d954ca2ce48a4db93ff9dd4333, type: 3}
@@ -3200,7 +3201,7 @@ RectTransform:
   - {fileID: 984309359}
   - {fileID: 234623842}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4909,7 +4910,7 @@ RectTransform:
   m_Children:
   - {fileID: 425246930}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5225,6 +5226,7 @@ GameObject:
   - component: {fileID: 2069248381}
   - component: {fileID: 2069248380}
   - component: {fileID: 2069248382}
+  - component: {fileID: 2069248383}
   m_Layer: 5
   m_Name: SendButton
   m_TagString: Untagged
@@ -5334,6 +5336,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2069248383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069248378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6047e2e6fc6dfb7479b20e761a2fc6d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2070104676
 GameObject:
   m_ObjectHideFlags: 0
