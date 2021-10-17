@@ -6,6 +6,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [Header("Canvases")]
+    [SerializeField] GameObject GameCanvas;
+    [SerializeField] GameObject MenuCanvas;
     [SerializeField] GameObject ChatCanvas;
     [SerializeField] GameObject LoginCanvas;
 
@@ -14,13 +17,34 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
-    public void SetChatActive(bool mode)
+    public void SuccessfulLogin()
     {
-        ChatCanvas.SetActive(mode);
+        LoginCanvas.SetActive(false);
+        MenuCanvas.SetActive(true);
     }
 
-    public void SetLoginActive(bool mode)
+    public void OnReturnToMenuButtonClick()
     {
-        LoginCanvas.SetActive(mode);
+        ChatCanvas.SetActive(false);
+        GameCanvas.SetActive(false);
+
+        MenuCanvas.SetActive(true);
+    }
+
+    public void OnChatButtonClick()
+    {
+        MenuCanvas.SetActive(false);
+        ChatCanvas.SetActive(true);
+    }
+
+    public void OnGameButtonClick()
+    {
+        MenuCanvas.SetActive(false);
+        GameCanvas.SetActive(true);
+    }
+
+    public void OnRefreshButtonClick()
+    {
+        MatchesManager.Instance.RefreshMatchList();
     }
 }

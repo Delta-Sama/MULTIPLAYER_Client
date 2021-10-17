@@ -109,7 +109,12 @@ public class ChatManager : MonoBehaviour
         else
             privateRecieverId = -1;
 
-        // Set visual states for buttons
+        SetButtonsState();
+    }
+
+    private void SetButtonsState()
+    {
+        // Set visual states for user buttons
         foreach (var userButton in userButtons)
         {
             userButton.Value.GetComponent<UserButtonBehavior>().SetActiveState(userButton.Key == privateRecieverId);
@@ -125,6 +130,12 @@ public class ChatManager : MonoBehaviour
         if (userButtons.TryGetValue(userId, out UserButton))
         {
             Destroy(UserButton);
+        }
+
+        if (userId == privateRecieverId)
+        {
+            privateRecieverId = 0;
+            SetButtonsState();
         }
     }
 

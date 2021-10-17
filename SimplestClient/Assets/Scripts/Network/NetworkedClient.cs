@@ -137,8 +137,7 @@ public class NetworkedClient : MonoBehaviour
         }
         else if (requestType == ServerToClientTransferSignifiers.SuccessfulLogin)
         {
-            UIManager.Instance.SetLoginActive(false);
-            UIManager.Instance.SetChatActive(true);
+            UIManager.Instance.SuccessfulLogin();
         }
         else if (requestType == ServerToClientTransferSignifiers.AddUserToLocalClient)
         {
@@ -167,6 +166,13 @@ public class NetworkedClient : MonoBehaviour
 
             ChatManager.Instance.ReceivePrivateMessage(userId, message);
         }
+        else if (requestType == ServerToClientTransferSignifiers.AddMatchToList)
+        {
+            int matchId = int.Parse(csv[1]);
+            string matchName = csv[2];
+
+            MatchesManager.Instance.AddMatch(matchId,matchName);
+        }
     }
 
     public bool IsConnected()
@@ -185,6 +191,11 @@ public static class ClientToServerTransferSignifiers
 
     public const int SendGlobalMessage = 4;
     public const int SendPrivateMessage = 5;
+
+    public const int CreateMatch = 6;
+    public const int JoinMatch = 7;
+
+    public const int GetMatchesList = 8;
 }
 
 public static class ServerToClientTransferSignifiers
@@ -197,4 +208,10 @@ public static class ServerToClientTransferSignifiers
 
     public const int ReceiveGlobalMessage = 5;
     public const int ReceivePrivateMessage = 6;
+
+    public const int MatchStarted = 7;
+    public const int MatchRemoved = 8;
+    public const int MatchFinished = 9;
+
+    public const int AddMatchToList = 10;
 }
