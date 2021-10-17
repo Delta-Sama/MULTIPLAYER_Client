@@ -20,14 +20,25 @@ public class ChatManager : MonoBehaviour
     [SerializeField] private GameObject UserButtonPrefab;
 
     private Queue<GameObject> messagesQueue;
+    private Dictionary<int, GameObject> userButtons;
 
-    void Start()
+    private int privateRecieverId = -1;
+    private bool isPrivateMessage { get => privateRecieverId >= 0; }
+
+    private void Awake()
     {
         Instance = this;
 
         messagesQueue = new Queue<GameObject>();
+        userButtons = new Dictionary<int, GameObject>();
 
         SendButton.onClick.AddListener(SendMessage);
+    }
+
+    void Start()
+    {
+        UsersManager.Instance.OnUserAddedEvent.AddListener(AddUserButton);
+        UsersManager.Instance.OnUserRemovedEvent.AddListener(RemoveUserButton);
     }
 
     private void SendMessage()
@@ -35,10 +46,19 @@ public class ChatManager : MonoBehaviour
         if (Input.text.Length == 0) return;
 
         string message = Input.text;
-        NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.SendGlobalMessage + "," + message);
 
-        AddMessage(message, "Self", MessageType.OwnMessage);
+        if (isPrivateMessage)
+        {
+            NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.SendPrivateMessage + "," + privateRecieverId + "," + message);
+        }
+        else
+        {
+            NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.SendGlobalMessage + "," + message);
 
+            AddMessage(message, "Self", MessageType.OwnMessage);
+        }
+
+        // Clear input
         Input.Select();
         Input.text = "";
     }
@@ -65,6 +85,40 @@ public class ChatManager : MonoBehaviour
         messagesQueue.Enqueue(Message);
     }
 
+    public void AddUserButton(int userId)
+    {
+        UserAccount user = UsersManager.Instance.GetUser(userId);
+        GameObject UserButton = Instantiate(UserButtonPrefab, UsersContent.transform);
+        UserButton.transform.Find("Name").GetComponent<Text>().text = user.name;
+
+        UserButton.GetComponent<Button>().onClick.AddListener(() => UserButtonClick(user));
+
+        userButtons.Add(userId, UserButton);
+    }
+
+    private void UserButtonClick(UserAccount user)
+    {
+        if (privateRecieverId != user.userId)
+            privateRecieverId = user.userId;
+        else
+            privateRecieverId = -1;
+
+        // Set visual states for buttons
+        foreach (var userButton in userButtons)
+        {
+            userButton.Value.GetComponent<UserButtonBehavior>().SetActiveState(userButton.Key == privateRecieverId);
+        }
+    }
+
+    public void RemoveUserButton(int userId)
+    {
+        GameObject UserButton;
+        if (userButtons.TryGetValue(userId, out UserButton))
+        {
+            Destroy(UserButton);
+        }
+    }
+
     public void ReceiveGlobalMessage(int userId, string message)
     {
         UserAccount user = UsersManager.Instance.GetUser(userId);
@@ -79,6 +133,8 @@ public class ChatManager : MonoBehaviour
         UserAccount user = UsersManager.Instance.GetUser(userId);
 
         Debug.Log("Private message from " + user.name + ": " + DecodeMessageToString(message));
+
+        AddMessage(message, user.name, MessageType.PrivateMessage);
     }
 
     public string EncodeStringToMessage(string message)

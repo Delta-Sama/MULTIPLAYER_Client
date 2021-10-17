@@ -1244,7 +1244,7 @@ MonoBehaviour:
   submitButton: {fileID: 1747683249}
   forgotPasswordButton: {fileID: 1550988828}
   userNameInput: {fileID: 1667419464}
-  passwordInput: {fileID: 1667419464}
+  passwordInput: {fileID: 1131895705}
   createLoginInput: {fileID: 1646342033}
   createPasswordInput: {fileID: 1817400847}
   createEmailInput: {fileID: 1666614714}
@@ -2496,6 +2496,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c672f29cf19a764bbf262244ec4ba2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnUserAddedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUserRemovedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1180514920
 GameObject:
   m_ObjectHideFlags: 0

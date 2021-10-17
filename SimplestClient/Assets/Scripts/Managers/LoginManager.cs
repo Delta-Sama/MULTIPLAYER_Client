@@ -26,8 +26,7 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private GameObject loginToggle;
     [SerializeField] private GameObject createToggle;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         Instance = this;
 
@@ -42,7 +41,6 @@ public class LoginManager : MonoBehaviour
     void ForgotPasswordRequest()
     {
         string login = userNameInput.GetComponent<InputField>().text;
-        string password = passwordInput.GetComponent<InputField>().text;
 
         if (login != "")
             NetworkedClient.Instance.SendServerRequest(ClientToServerTransferSignifiers.ForgotPassword + "," + login);

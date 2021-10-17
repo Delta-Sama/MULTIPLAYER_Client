@@ -22,11 +22,13 @@ public class NetworkedClient : MonoBehaviour
     bool isConnected = false;
     int ourClientID;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         Instance = this;
+    }
 
+    private void Start()
+    {
         Connect();
     }
 
@@ -72,7 +74,6 @@ public class NetworkedClient : MonoBehaviour
     
     private void Connect()
     {
-
         if (!isConnected)
         {
             Debug.Log("Attempting to create connection");
