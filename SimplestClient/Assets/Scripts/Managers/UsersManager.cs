@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalGameManager : MonoBehaviour
+public class UsersManager : MonoBehaviour
 {
-    public static LocalGameManager Instance;
+    public static UsersManager Instance;
 
     public Dictionary<int, UserAccount> connectedUsers;
 
@@ -23,6 +23,14 @@ public class LocalGameManager : MonoBehaviour
         connectedUsers.Add(userId, user);
 
         Debug.Log("User connected: " + name + ", " + userId);
+    }
+
+    public UserAccount GetUser(int userId)
+    {
+        UserAccount user = null;
+        UsersManager.Instance.connectedUsers.TryGetValue(userId, out user);
+
+        return user;
     }
 
     public void RemoveUser(int userId)

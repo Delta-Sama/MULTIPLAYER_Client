@@ -144,13 +144,13 @@ public class NetworkedClient : MonoBehaviour
             int userId = int.Parse(csv[1]);
             string name = csv[2];
 
-            LocalGameManager.Instance.AddUser(userId,name);
+            UsersManager.Instance.AddUser(userId,name);
         }
         else if (requestType == ServerToClientTransferSignifiers.UserDisconnected)
         {
             int userId = int.Parse(csv[1]);
 
-            LocalGameManager.Instance.RemoveUser(userId);
+            UsersManager.Instance.RemoveUser(userId);
         }
         else if (requestType == ServerToClientTransferSignifiers.ReceiveGlobalMessage)
         {

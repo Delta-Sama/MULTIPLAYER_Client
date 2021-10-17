@@ -7,45 +7,29 @@ public class LoginManager : MonoBehaviour
 {
     public static LoginManager Instance;
 
-    [SerializeField] GameObject createTab, loginTab;
+    [Header("Tabs")]
+    [SerializeField] private GameObject createTab;
+    [SerializeField] private GameObject loginTab;
 
-    GameObject submitButton, userNameInput, passwordInput, toggles, loginToggle, createToggle;
-    GameObject forgotPasswordButton, createLoginInput, createPasswordInput, createEmailInput;
+    [Header("Buttons")]
+    [SerializeField] private GameObject submitButton;
+    [SerializeField] private GameObject forgotPasswordButton;
+
+    [Header("Inputs")]
+    [SerializeField] private GameObject userNameInput;
+    [SerializeField] private GameObject passwordInput;
+    [SerializeField] private GameObject createLoginInput;
+    [SerializeField] private GameObject createPasswordInput;
+    [SerializeField] private GameObject createEmailInput;
+
+    [Header("Toggles")]
+    [SerializeField] private GameObject loginToggle;
+    [SerializeField] private GameObject createToggle;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
-
-        createTab.SetActive(true);
-
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
-        {
-            if (obj.name == "SubmitButton")
-                submitButton = obj;
-            else if (obj.name == "ForgotPasswordButton")
-                forgotPasswordButton = obj;
-            else if (obj.name == "LoginInputField")
-                userNameInput = obj;
-            else if (obj.name == "PasswordInputField")
-                passwordInput = obj;
-            else if (obj.name == "CreateLoginInputField")
-                createLoginInput = obj;
-            else if (obj.name == "CreatePasswordInputField")
-                createPasswordInput = obj;
-            else if (obj.name == "CreateEmailInputField")
-                createEmailInput = obj;
-            else if (obj.name == "Toggles")
-                toggles = obj;
-            else if (obj.name == "LoginToggle")
-                loginToggle = obj;
-            else if (obj.name == "CreateAccountToggle")
-                createToggle = obj;
-        }
-
-        createTab.SetActive(false);
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitRequst);
         forgotPasswordButton.GetComponent<Button>().onClick.AddListener(ForgotPasswordRequest);
